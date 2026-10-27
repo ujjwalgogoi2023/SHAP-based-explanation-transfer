@@ -1,0 +1,50 @@
+seed: 42
+n_seeds: 5
+seeds: [42, 123, 7, 2024, 31415]
+
+data:
+  cicids2017_dir: C:/Users/ujjwa/Downloads/archive
+  unsw_nb15_dir: C:/Users/ujjwa/Downloads/archive (1)
+  processed_dir: data/processed
+  source_dataset: cicids2017      # trained on this
+  target_dataset: unsw_nb15       # evaluated on this without retraining
+  subsample_per_class: 20000      # cap per class before split, for Colab/Kaggle GPU sessions
+  test_size: 0.2
+  val_size: 0.1
+  sequence_length: 1              # flows are treated as independent rows; set >1 if building session windows
+
+model:
+  cnn_channels: [32, 64]
+  cnn_kernel_size: 3
+  lstm_hidden_size: 64
+  lstm_layers: 1
+  dropout: 0.3
+  bidirectional: false
+
+train:
+  batch_size: 256
+  epochs: 30
+  lr: 0.001
+  weight_decay: 0.00001
+  early_stopping_patience: 5
+  class_weighted_loss: true
+  device: cuda   # falls back to cpu automatically if unavailable
+
+shap:
+  # "gradient" (Expected Gradients) is the default and the correct choice here:
+  # shap.DeepExplainer does not implement DeepLIFT for nn.LSTM and silently
+  # degrades to a plain gradient for that layer. Set to "deep" to reproduce the
+  # DeepSHAP variant for the robustness appendix.
+  explainer_type: gradient
+  background_samples: 200
+  explain_samples_per_class: 500
+  # Must stay well below the 13 harmonised features. Jaccard@k is identically
+  # 1.0 once k >= 13 (both slices become the whole feature set), so the
+  # proposal's k=20 would have silently inflated every consistency score.
+  top_k: [3, 5, 7]
+
+output:
+  checkpoints_dir: checkpoints
+  results_dir: results
+  figures_dir: results/figures
+  tables_dir: results/tables

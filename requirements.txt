@@ -1,0 +1,16 @@
+# The exploratory analysis and the report.
+numpy>=1.24
+pandas>=2.0
+scipy>=1.11
+scikit-learn>=1.3
+matplotlib>=3.7
+pyyaml>=6.0
+python-docx>=1.1
+
+# PDF export drives the installed Microsoft Word through COM and needs no
+# Python package. Without Word the .docx is still written.
+
+# Only needed to re-run the parent project's modelling code under src/models,
+# src/training and src/explain, which the EDA itself does not call:
+#   torch>=2.1
+#   shap>=0.44
