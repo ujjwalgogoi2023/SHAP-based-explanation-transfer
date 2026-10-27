@@ -1680,7 +1680,11 @@ def appendix(doc, F):
         # continuation rather than looking like two commands.
         pf.left_indent = Inches(0.26)
         pf.first_line_indent = Inches(-0.14)
-        pf.space_after = Pt(1)
+        # The block spans both columns, so it lands under whatever the columns
+        # happen to end on; the leading gap keeps it from reading as part of
+        # the paragraph above it.
+        pf.space_before = Pt(7 if i == 0 else 0)
+        pf.space_after = Pt(7 if i == len(cmds) - 1 else 1)
         pf.keep_with_next = i < len(cmds) - 1
     _span(doc, 2)
     _N["fresh"] = True

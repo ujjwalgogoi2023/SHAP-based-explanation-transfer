@@ -66,10 +66,16 @@ that produced them.
 ## Running it
 
 ```bash
+git clone https://github.com/ujjwalgogoi2023/SHAP-based-explanation-transfer
+cd SHAP-based-explanation-transfer
 pip install -r requirements.txt
 python scripts/run_eda.py          # all six stages
 python scripts/build_report.py     # .docx + .pdf
 ```
+
+Only the codebase is tracked. The datasets, the figures, the result tables and
+the built report are all produced by those two commands and are not in the
+repository.
 
 Stage 1 reads ~0.9 GB of raw CSVs and takes a few minutes. Every later stage
 reads the cached harmonised matrix, so iterating on figures is fast:
