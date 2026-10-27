@@ -40,7 +40,7 @@ KEYWORDS = ("exploratory data analysis, distribution shift, covariate shift, "
 
 # The repository Appendix A tells a reader to clone. Left empty the clone line
 # is omitted, so the paper never carries a placeholder URL.
-REPO = ""
+REPO = "https://github.com/ujjwalgogoi2023/SHAP-based-explanation-transfer"
 
 SERIF = "Times New Roman"
 MONO = "Consolas"
@@ -1665,19 +1665,25 @@ def appendix(doc, F):
             "python scripts/build_report.py      # rebuild the paper"]
     if REPO:
         cmds.insert(0, f"git clone {REPO}")
+    # Full width, like a figure. The clone line runs to 76 characters, which no
+    # column measure holds at a readable size, and a URL broken across two
+    # lines at one of its own hyphens cannot be copied back with confidence.
+    _span(doc, 1)
     for i, cmd in enumerate(cmds):
         p = doc.add_paragraph()
         r = p.add_run(cmd)
         _serif(r, MONO)
-        r.font.size = Pt(7)
+        r.font.size = Pt(8)
         r.font.color.rgb = BLACK
         pf = p.paragraph_format
-        # Hanging, so a command too long for the column measure wraps as a
-        # visible continuation rather than looking like two commands.
+        # Hanging, so a longer command than any of these wraps as a visible
+        # continuation rather than looking like two commands.
         pf.left_indent = Inches(0.26)
         pf.first_line_indent = Inches(-0.14)
         pf.space_after = Pt(1)
         pf.keep_with_next = i < len(cmds) - 1
+    _span(doc, 2)
+    _N["fresh"] = True
 
     h2(doc, "Stage map")
     stages = pd.DataFrame([
